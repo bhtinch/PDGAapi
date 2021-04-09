@@ -19,6 +19,11 @@ struct LoginResponse: Codable {
     let token: String
 }
 
+struct ApiLogin: Codable {
+    var username: String
+    var password: String
+}
+
 class ApiController {
     static let baseURL = URL(string: "https://api.pdga.com")
     static let courseSearchEndPoint = "/services/json/course"
@@ -33,9 +38,17 @@ class ApiController {
     static let eventURL = "https://www.pdga.com/tour/event"
     
     static func login(completion: @escaping (Result<LoginResponse, NetworkError>) -> Void) {
-        let usernameValue = "b.h.tincher"
-        let passwordValue = "Restorati0n1010"
+        var usernameValue = ""
+        var passwordValue = ""
         
+        if  let path = Bundle.main.path(forResource: "ApiLogin", ofType: "plist"),
+            let xml = FileManager.default.contents(atPath: path),
+            let loginDict = try? PropertyListDecoder().decode(ApiLogin.self, from: xml)
+        {
+            usernameValue = loginDict.username
+            passwordValue = loginDict.password
+        }
+                
         guard let baseURL = baseURL else { return completion(.failure(.invalidURL)) }
         let loginURL = baseURL.appendingPathComponent(loginEndPoint)
         

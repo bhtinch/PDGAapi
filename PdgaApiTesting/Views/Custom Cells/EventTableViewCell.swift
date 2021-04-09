@@ -15,4 +15,8 @@ class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var tierLabel: RoundedColorLabel!
     @IBOutlet weak var logoImage: UIImageView!
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+    }
+    
 }
