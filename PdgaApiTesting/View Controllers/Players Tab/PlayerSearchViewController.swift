@@ -11,6 +11,7 @@ class PlayerSearchViewController: UIViewController {
     //  MARK: - OUTLETS
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var copyrightLabel: UILabel!
     
     //  MARK: - PROPERTIES
     var players: [Player] = []
@@ -23,6 +24,7 @@ class PlayerSearchViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
+        copyrightLabel.isHidden = true
     }
     
     //  MARK: - METHODS
@@ -50,6 +52,7 @@ class PlayerSearchViewController: UIViewController {
                 case .success(let players):
                     self.players = players
                     self.tableView.reloadData()
+                    self.copyrightLabel.isHidden = false
                     self.firstName = ""
                     self.lastName = ""
                     self.searchBar.text = ""
@@ -128,5 +131,6 @@ extension PlayerSearchViewController: UISearchBarDelegate {
         searchBar.text = ""
         self.players = []
         self.tableView.reloadData()
+        copyrightLabel.isHidden = true
     }
 }   //  End of Extension

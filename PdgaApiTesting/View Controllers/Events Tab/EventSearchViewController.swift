@@ -11,6 +11,7 @@ class EventSearchViewController: UIViewController {
     //  MARK: - OUTLETS
     @IBOutlet weak var searchButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var copyrightLabel: UILabel!
     
     //  MARK: - PROPERTIES
     var events: [Event] = []
@@ -24,6 +25,7 @@ class EventSearchViewController: UIViewController {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        copyrightLabel.isHidden = true
     }
     
     //  MARK: - ACTIONS
@@ -76,7 +78,7 @@ class EventSearchViewController: UIViewController {
         print("Clear button clicked.")
         self.events = []
         self.tableView.reloadData()
-
+        copyrightLabel.isHidden = true
     }
     
     //  MARK: - METHODS
@@ -102,6 +104,7 @@ class EventSearchViewController: UIViewController {
                 case .success(let events):
                     self.events = events
                     self.tableView.reloadData()
+                    self.copyrightLabel.isHidden = false
                     self.eventName = nil
                     self.state = nil
                     self.startDate = nil
@@ -146,7 +149,7 @@ extension EventSearchViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let eventCell = tableView.dequeueReusableCell(withIdentifier: "eventCell", for: indexPath) as? EventTableViewCell else { return UITableViewCell() }
-        let event = events[indexPath.row]
+	        let event = events[indexPath.row]
         
         eventCell.dateLabel.text = event.configureStartDate() ?? "Date"
         eventCell.eventNameLabel.text = event.tournament_name ?? "Unknown Tournament"

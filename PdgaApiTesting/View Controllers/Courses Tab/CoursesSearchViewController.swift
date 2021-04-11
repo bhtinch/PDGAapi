@@ -11,6 +11,7 @@ class CoursesSearchViewController: UIViewController {
     //  MARK: - OUTLETS
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var copyrightLabel: UILabel!
     
     //  MARK: - PROPERTIES
     var courses: [Course] = []
@@ -24,6 +25,7 @@ class CoursesSearchViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
+        copyrightLabel.isHidden = true
     }
     
     //  MARK: - METHODS
@@ -51,6 +53,7 @@ class CoursesSearchViewController: UIViewController {
                 case .success(let courses):
                     self.courses = courses
                     self.tableView.reloadData()
+                    self.copyrightLabel.isHidden = false
                     self.searchTerm = ""
                     self.searchBar.text = ""
                     self.searchBar.resignFirstResponder()
@@ -118,5 +121,6 @@ extension CoursesSearchViewController: UISearchBarDelegate {
         searchBar.text = ""
         self.courses = []
         self.tableView.reloadData()
+        copyrightLabel.isHidden = true
     }
 }   //  End of Extension

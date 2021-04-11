@@ -11,7 +11,7 @@ class LinkTableViewCell: UITableViewCell {
     //  MARK: - OUTLETS
     @IBOutlet weak var linkButton: UIButton!
     @IBOutlet weak var linkLabel: UILabel!
-    
+        
     //  MARK: - PROPERTIES
     var tapAction: ((UITableViewCell) -> Void)?
     
