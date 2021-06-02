@@ -11,6 +11,7 @@ class EventSearchViewController: UIViewController {
     //  MARK: - OUTLETS
     @IBOutlet weak var searchButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var copyrightLabel: UILabel!
     
     //  MARK: - PROPERTIES
     var events: [Event] = []
@@ -24,6 +25,7 @@ class EventSearchViewController: UIViewController {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        copyrightLabel.isHidden = true
     }
     
     //  MARK: - ACTIONS
@@ -76,7 +78,7 @@ class EventSearchViewController: UIViewController {
         print("Clear button clicked.")
         self.events = []
         self.tableView.reloadData()
-
+        copyrightLabel.isHidden = true
     }
     
     //  MARK: - METHODS
@@ -86,6 +88,7 @@ class EventSearchViewController: UIViewController {
                 switch result {
                 case .success(let response):
                     self.loginResponse = response
+                    print(response)
                     self.searchEventsWith(eventName: self.eventName, state: self.state, startDate: self.startDate)
                 case .failure(let error):
                     print("***Error*** in Function: \(#function)\n\nError: \(error)\n\nDescription: \(error.localizedDescription)")
@@ -95,6 +98,8 @@ class EventSearchViewController: UIViewController {
     }
     
     func searchEventsWith(eventName: String?, state: String?, startDate: String?) {
+        print("Searching for eventName: \(eventName), state: \(state), startDate: \(startDate)")
+        
         guard let loginResponse = self.loginResponse else { return }
         ApiController.getEventsBy(eventName: eventName, state: state, startDate: startDate, loginResponse: loginResponse) { (result) in
             DispatchQueue.main.async {
@@ -102,6 +107,7 @@ class EventSearchViewController: UIViewController {
                 case .success(let events):
                     self.events = events
                     self.tableView.reloadData()
+                    self.copyrightLabel.isHidden = false
                     self.eventName = nil
                     self.state = nil
                     self.startDate = nil
@@ -146,42 +152,45 @@ extension EventSearchViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let eventCell = tableView.dequeueReusableCell(withIdentifier: "eventCell", for: indexPath) as? EventTableViewCell else { return UITableViewCell() }
-        let event = events[indexPath.row]
+	        let event = events[indexPath.row]
         
         eventCell.dateLabel.text = event.configureStartDate() ?? "Date"
         eventCell.eventNameLabel.text = event.tournament_name ?? "Unknown Tournament"
         eventCell.eventLocationLabel.text = "\(event.city ?? "Unknown"), \(event.state_prov ?? "Unknown")"
         
-        if event.tier?.rawValue == "L" { eventCell.tierLabel.text = "League" } else {
-            eventCell.tierLabel.text = "Tier \(event.tier?.rawValue ?? "Unknown")"
-        }
         
-        if let tier = event.tier {
-            switch tier {
-            case .L:
-                eventCell.tierLabel.backgroundColor = .darkGray
-            case .NT:
-                eventCell.tierLabel.backgroundColor = .systemOrange
-            case .B:
-                eventCell.tierLabel.backgroundColor = .systemGreen
-            case .C:
-                eventCell.tierLabel.backgroundColor = .blue
-            case .M:
-                eventCell.tierLabel.backgroundColor = .purple
-            case .A:
-                eventCell.tierLabel.backgroundColor = .systemIndigo
-            case .DGPT:
-                eventCell.tierLabel.backgroundColor = .black
-            case .XM:
-                eventCell.tierLabel.backgroundColor = .systemTeal
-            case .XA:
-                eventCell.tierLabel.backgroundColor = .systemGray
-            case .XB:
-                eventCell.tierLabel.backgroundColor = .link
-            case .XC:
-                eventCell.tierLabel.backgroundColor = .systemRed
-            }
-        }
+        eventCell.tierLabel.text = event.tier
+        
+//        if event.tier?.rawValue == "L" { eventCell.tierLabel.text = "League" } else {
+//            eventCell.tierLabel.text = "Tier \(event.tier?.rawValue ?? "Unknown")"
+//        }
+//
+//        if let tier = event.tier {
+//            switch tier {
+//            case .L:
+//                eventCell.tierLabel.backgroundColor = .darkGray
+//            case .NT:
+//                eventCell.tierLabel.backgroundColor = .systemOrange
+//            case .B:
+//                eventCell.tierLabel.backgroundColor = .systemGreen
+//            case .C:
+//                eventCell.tierLabel.backgroundColor = .blue
+//            case .M:
+//                eventCell.tierLabel.backgroundColor = .purple
+//            case .A:
+//                eventCell.tierLabel.backgroundColor = .systemIndigo
+//            case .DGPT:
+//                eventCell.tierLabel.backgroundColor = .black
+//            case .XM:
+//                eventCell.tierLabel.backgroundColor = .systemTeal
+//            case .XA:
+//                eventCell.tierLabel.backgroundColor = .systemGray
+//            case .XB:
+//                eventCell.tierLabel.backgroundColor = .link
+//            case .XC:
+//                eventCell.tierLabel.backgroundColor = .systemRed
+//            }
+//        }
         
         if event.status != "sanctioned" { eventCell.logoImage.isHidden = true }
         return eventCell

@@ -77,6 +77,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Find Courses" id="7Ct-9a-7tN"/>
                     <connections>
+                        <outlet property="copyrightLabel" destination="Pxx-OA-df6" id="aop-L3-gw0"/>
                         <outlet property="searchBar" destination="rzM-cp-1uJ" id="WWS-yt-B3y"/>
                         <outlet property="tableView" destination="T8y-2r-2zj" id="bse-Hc-dwq"/>
                     </connections>
@@ -286,6 +287,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Find Players" id="Vx5-T8-EJx"/>
                     <connections>
+                        <outlet property="copyrightLabel" destination="clv-rV-plZ" id="exk-OC-Nd0"/>
                         <outlet property="searchBar" destination="H80-9N-m7P" id="wrr-Me-8eA"/>
                         <outlet property="tableView" destination="Ayr-gG-4vU" id="mfs-rg-5t9"/>
                     </connections>
@@ -534,6 +536,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="copyrightLabel" destination="dw6-0A-F98" id="L52-Px-2M1"/>
                         <outlet property="searchButton" destination="uhH-V9-hI9" id="sHm-3L-VB1"/>
                         <outlet property="tableView" destination="2DE-fH-DPY" id="2GR-ai-JAv"/>
                     </connections>
